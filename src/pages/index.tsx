@@ -4,12 +4,13 @@ import { useKeenSlider } from 'keen-slider/react'
 import { GetStaticProps } from 'next'
 import { stripe } from '@ignite-shop/lib/stripe'
 import Stripe from 'stripe'
+import React, { useEffect } from 'react'
 
 interface IProduct {
   id: string
   name: string
   imageUrl: string
-  price: number
+  price: string
 }
 
 interface HomeProps {
@@ -21,6 +22,14 @@ export default function Home({ products }: HomeProps) {
     slides: {
       perView: 2,
       spacing: 48,
+    },
+    breakpoints: {
+      '(max-width: 1180px)': {
+        slides: {
+          perView: 1.1,
+          spacing: 16,
+        },
+      },
     },
   })
 
@@ -38,7 +47,7 @@ export default function Home({ products }: HomeProps) {
             />
             <footer>
               <strong>{product.name}</strong>
-              <span>R$ {product.price.toFixed(2)}</span>
+              <span>{product.price}</span>
             </footer>
           </Product>
         )
@@ -58,7 +67,10 @@ export const getStaticProps: GetStaticProps = async () => {
       id: product.id,
       name: product.name,
       imageUrl: product.images.length > 0 ? product.images[0] : '',
-      price: defaultPrice.unit_amount ? defaultPrice.unit_amount / 100 : 0,
+      price: new Intl.NumberFormat('pt-BR', {
+        style: 'currency',
+        currency: 'BRL',
+      }).format(defaultPrice.unit_amount ? defaultPrice.unit_amount / 100 : 0),
     } as IProduct
   })
 
