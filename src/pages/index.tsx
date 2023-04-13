@@ -4,7 +4,6 @@ import { useKeenSlider } from 'keen-slider/react'
 import { GetStaticProps } from 'next'
 import { stripe } from '@ignite-shop/lib/stripe'
 import Stripe from 'stripe'
-import React, { useEffect } from 'react'
 
 interface IProduct {
   id: string
