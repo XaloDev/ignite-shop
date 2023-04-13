@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import { HomeContainer, Product } from '@ignite-shop/styles/pages/home'
 import { useKeenSlider } from 'keen-slider/react'
-import { GetServerSideProps } from 'next'
+import { GetStaticProps } from 'next'
 import { stripe } from '@ignite-shop/lib/stripe'
 import Stripe from 'stripe'
 
@@ -47,7 +47,7 @@ export default function Home({ products }: HomeProps) {
   )
 }
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getStaticProps: GetStaticProps = async () => {
   const response = await stripe.products.list({
     expand: ['data.default_price'],
   })
@@ -56,17 +56,16 @@ export const getServerSideProps: GetServerSideProps = async () => {
     const defaultPrice = product.default_price as Stripe.Price
     return {
       id: product.id,
-      title: product.name,
+      name: product.name,
       imageUrl: product.images.length > 0 ? product.images[0] : '',
       price: defaultPrice.unit_amount ? defaultPrice.unit_amount / 100 : 0,
-    }
+    } as IProduct
   })
-
-  console.log(products)
 
   return {
     props: {
       products,
     },
+    revalidate: 60 * 10, // 10 minutes
   }
 }
