@@ -5,13 +5,16 @@ import { Container, Header } from '@ignite-shop/styles/pages/app'
 import Image from 'next/image'
 
 import 'keen-slider/keen-slider.min.css'
+import Link from 'next/link'
 globalStyles()
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <Container>
       <Header>
-        <Image src={logoImg} alt="" priority quality={100} />
+        <Link href={'/'}>
+          <Image src={logoImg} alt="" priority quality={100} />
+        </Link>
       </Header>
 
       <Component {...pageProps} />

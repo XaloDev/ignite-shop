@@ -25,6 +25,7 @@ export const Product = styled(Link, {
     left: '0.25rem',
     right: '0.25rem',
     padding: '2rem',
+    color: '$gray100',
 
     borderRadius: 6,
 
